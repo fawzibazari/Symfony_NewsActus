@@ -1,0 +1,61 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-12 mx-auto">
+            {% if post is defined %}
+                <h1 class="text-center">Modifier un article</h1>
+            {% else %}
+                <h1 class="text-center">Ajouter un article</h1>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8 mx-auto">
+
+{# 1ère façon : affichage global du formulaire #}
+        {# {{ form(form) }} #}
+
+{# 2nd façon : affichage partiel du formulaire = input par input #}
+            {{ form_start(form, {'attr': {novalidate: 'novalidate'}} ) }} {# <form class="" action="" method=""> #}
+
+                {# form_row() représente votre input déclaré dans le PostType #}
+            <div class="mb-3">
+                {{ form_row(form.title) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.subtitles) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.content) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.category) }}
+            </div>
+            <div class="mb-3">
+                {{ form_row(form.photo) }}
+            </div>
+
+            {% if post is defined %}
+                <button type="submit" class="d-block col-2 mx-auto btn btn-warning">Modifier</button>
+            {% else %}
+                <button type="submit" class="d-block col-2 mx-auto btn btn-success">Publier</button>
+            {% endif %}
+
+{# Nous allons plutôt déclarer le <button> dans le PostType #}
+{# <button type="submit">Publier</button>#}
+
+            {{ form_end(form) }} {# </form> #}
+        </div>
+    </div>
+
+{#    {% if post.photo is not null %}#}
+{#    <div class="col-6">#}
+{#        <img src="{{ asset('uploads/') ~ post.photo }}" alt="" class="img-fluid">#}
+{#    </div>#}
+{#{% endif %}#}
+
+{% endblock %}

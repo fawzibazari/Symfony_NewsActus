@@ -1,0 +1,29 @@
+{% extends 'layout/base.html.twig' %}
+
+{% block  content %}
+<div class="row">
+    <h1 class="col-12 text-center my-2">Tous les articles</h1>
+ {% for post in posts %} <!-- foreach($articles as $article) -->
+            <div class="col-3 my-3 mx-2">
+                <div class="card" style="width: 18rem; height: 26rem;">
+                    <img src="{{ asset('uploads/' ~ post.photo) }}" class="card-img-top img-card-custom" alt="{{ post.title }}">
+                    {#            <ul class="list-group list-group-flush">#}
+                    {#                <li class="list-group-item">Catégorie : </li>#}
+                    {#            </ul>#}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title | length > 20 ? post.title | slice(0, 20) ~ '...' : post.title}}</h5>
+                        <h6 class="card-title">{{ post.subtitles | length > 30 ? post.subtitles | slice(0, 30) ~ '...' : post.subtitles}}</h6>
+                        <p class="card-text">{{ post.content | length > 50 ? post.content | slice(0, 50) ~ '...' : post.content}}</p>
+                        <a href="{{ path('show_post', {'cat_alias': post.category.alias, 'post_alias': post.alias, 'id': post.id}) }}" class="btn btn-warning d-block mx-auto">Voir</a>                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+<div class="row">
+    <div class="col-12">
+    {% include 'components/_flashes.html.twig' %}
+    </div>
+</div>
+
+{% endblock %}

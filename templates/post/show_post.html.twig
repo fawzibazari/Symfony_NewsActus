@@ -1,0 +1,49 @@
+{% extends "layout/base.html.twig" %}
+
+{% block content %}
+  <div class="row">
+        <div class="col-12">
+            {% include "components/_flashes.html.twig" %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10 my-4 mx-auto">
+
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title text-center mb-5">{{ post.title }}</h1>
+                    <p class="h4 text-center mb-3 text-secondary">{{ post.subtitles }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-center text-muted">Crée le : {{ post.createdAt | date('d/m/Y') }}  | Par : </li>
+                </ul>
+                <img class="img-custom" src="{{ asset('uploads/' ~ post.photo) }}" alt="{{ post.title }}">
+                <div class="card-body">
+                    <p class="card-text my-4 col-10 mx-auto">{{ post.content | raw }}</p>
+                    {# <pre style="white-space: pre-wrap;">{{post.content}}</pre> #}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# {{ render(controller('App\Controller\Commentary::addCommentary')) }} #}
+    {{ render(url('add_commentary', {'id': post.id}) ) }}
+
+      <h3>Espace Commentaires</h3>
+
+    {% if commentaries is not null %}
+    <div class="row">
+        <div class="col5 mx-auto">
+            {% for commentary in commentaries %}
+                <div class="shadow my-2">
+                    <p class="ps-3 text-muted">Créer le :  {{ commentary.createdAt | date('d/m/Y') }} | Par :</p>
+                    <p class="ps-3 shadow-md">{{ commentary.comment }}</p>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+{% endblock %}
+
