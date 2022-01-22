@@ -9,21 +9,51 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ path('default_home') }}">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Espace Admin
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="{{ path('show_dashboard') }}">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="{{ path('post_create_post') }}">Ajouter un article</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
+
+                {% if not app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('user_register') }}">S'inscrire</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Se connecter</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">Se déconnecter</a>
+                    </li>
+                {% endif %}
+
+{# Pour vérifier le rôle d'un user en Twig, il vous faudra utiliser la méthode "is_granted()" #}
+                {% if is_granted("ROLE_ADMIN") %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Espace Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ path('show_dashboard') }}">Dashboard</a></li>
+                            <li><a class="dropdown-item" href="{{ path('post_create_post') }}">Ajouter un article</a></li>
+                            <li><a class="dropdown-item" href="{{ path('create_category') }}">Ajouter une catégorie</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
+                {% endif %}
+
             </ul>
         </div>
     </div>
+    {% if app.user %}
+        <div class="text-nowrap">
+            Vous êtes connecté {{ app.user.firstname }} en tant que : <span class="text-warning">{{ app.user.roles[0] }}</span>
+        </div>
+    {% endif %}
 </nav>
+{# ----------------------- RENDER CATEGORIES ---------------------- #}
+<div class="bg-light">
+{#    {{ render(url('render_categories_in_nav')) }}#}
+
+    {#  Lorsque vous n'avez pas de route dans votre action et pas besoin d'arguments (dans le Controller)  #}
+    {{ render(controller('App\\Controller\\DefaultController::renderCategoriesInNav')) }}
+</div>

@@ -46,6 +46,9 @@ class Post
     #[ORM\OneToMany(mappedBy: 'post', targetEntity: Commentary::class)]
     private $commentaries;
 
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'posts')]
+    private $author;
+
 
     public function __construct()
     {
@@ -194,6 +197,18 @@ class Post
                 $commentary->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

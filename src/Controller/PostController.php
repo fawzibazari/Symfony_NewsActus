@@ -5,6 +5,7 @@ namespace App\Controller;
 use DateTime;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Entity\Category;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -138,6 +139,21 @@ class PostController extends AbstractController
         return $this->render('post/show_post.html.twig', [
             'post' => $post,
             'commentaries' => $commentaries
+        ]);
+    }
+
+    /**
+     * @Route("/voir/categorie/{alias}", name="show_posts_from_category", methods={"GET"})
+     * @param Category $category
+     * @return Response
+     */
+    public function showPostsFromCategory(Category $category, EntityManagerInterface $entityManager): Response
+    {
+        $posts = $entityManager->getRepository(Post::class)->findBy(['category' => $category->getId(), 'deletedAt' => null]);
+
+        return $this->render('post/show_posts_from_category.html.twig', [
+            'posts' => $posts,
+            'category' => $category
         ]);
     }
 
